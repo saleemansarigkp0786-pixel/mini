@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Plan with a clearer view{% endblock %}
+{% block body_class %}landing-page{% endblock %}
+{% block public_content %}
+<main class="landing-main">
+  <section class="landing-hero">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="eyebrow-mark"></span> A calmer way through college</div>
+      <h1>Your degree,<br><span>in good order.</span></h1>
+      <p>Map your semesters, keep the next deadline close, and see the progress you have actually made.</p>
+      <div class="hero-actions"><a class="button button-primary" href="{{ url_for('auth.register') }}">Build your degree plan <span>↗</span></a><a class="text-link" href="{{ url_for('auth.login') }}">I already have an account <span>→</span></a></div>
+      <div class="hero-note"><span class="note-check">✓</span> Your curriculum. Your plan. Your pace.</div>
+    </div>
+    <div class="hero-art" aria-label="Preview of a semester planner">
+      <div class="art-orbit art-orbit-one"></div><div class="art-orbit art-orbit-two"></div>
+      <div class="preview-panel">
+        <div class="preview-top"><div><span class="preview-overline">ACADEMIC OVERVIEW</span><h2>Good morning, Alex</h2></div><span class="preview-menu">•••</span></div>
+        <div class="preview-progress"><div class="preview-ring"><span>62<small>%</small></span></div><div><strong>Degree progress</strong><p>Across 4 semesters</p><span class="preview-pill">On track</span></div></div>
+        <div class="preview-divider"></div>
+        <div class="preview-section-head"><strong>Next up</strong><span>VIEW PLANNER ↗</span></div>
+        <div class="preview-task"><span class="task-date"><b>18</b><small>OCT</small></span><div><strong>Data Structures · Lab report</strong><small>Due Friday · High priority</small></div><span class="task-dot"></span></div>
+        <div class="preview-task"><span class="task-date date-blue"><b>22</b><small>OCT</small></span><div><strong>Database Systems · Quiz</strong><small>Next week · Medium priority</small></div><span class="task-dot dot-blue"></span></div>
+        <div class="preview-semester"><div><span class="semester-kicker">CURRENT SEMESTER</span><strong>Semester 4</strong></div><div class="mini-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+      </div>
+      <div class="art-caption"><span class="caption-star">✳</span><span>One plan for the whole journey.</span></div>
+    </div>
+  </section>
+  <section class="landing-strip"><div><b>01</b><span>Build a roadmap<br>that fits your curriculum</span></div><div><b>02</b><span>Keep your subjects<br>and deadlines together</span></div><div><b>03</b><span>Turn career interests<br>into next steps</span></div><div class="strip-aside">DEGREEPATH <span>·</span> STUDENT PLANNER</div></section>
+</main>
+{% endblock %}

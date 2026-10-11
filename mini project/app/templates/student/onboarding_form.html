@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Degree setup{% endblock %}
+{% block content %}
+{% set current_row = current_user.semesters|selectattr('number','equalto',current_user.current_semester or 1)|first %}
+<section class="page-heading">
+  <div class="eyebrow">MAKE THE PLAN YOURS</div>
+  <h1>Degree setup<span class="heading-period">.</span></h1>
+  <p>Every program differs. Start with what you know, then verify your structure with your institution.</p>
+</section>
+<form method="post" class="form-panel onboarding-form">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="form-section-title"><span>01</span><div><b>Your program</b><small>Personal degree details, not an official academic audit.</small></div></div>
+  <div class="form-grid">
+    <label>Degree type<input name="degree_type" value="{{ current_user.degree_type or '' }}" placeholder="BTech" maxlength="80"></label>
+    <label>Branch or specialization<input name="branch" value="{{ current_user.branch or '' }}" placeholder="Computer Science and Engineering" maxlength="120"></label>
+    <label>College<input name="college" value="{{ current_user.college or '' }}" placeholder="College name" maxlength="160"></label>
+    <label>University<input name="university" value="{{ current_user.university or '' }}" placeholder="University name" maxlength="160"></label>
+    <label class="span-two">Curriculum scheme or regulation year<input name="scheme" value="{{ current_user.scheme or '' }}" placeholder="Your curriculum label" maxlength="100"><small class="field-hint">Use the version published or confirmed by your institution.</small></label>
+    <label class="span-two">Start from a verified template
+      <select name="curriculum_version_id"><option value="">Enter my own course structure</option>{% for version in verified_curricula %}<option value="{{ version.id }}">{{ version.program.name }} · {{ version.name }}</option>{% endfor %}</select>
+      <small class="field-hint">Templates copy into your private plan. Fictional demo data is never offered as a verified course structure.</small>
+    </label>
+  </div>
+  <div class="form-section-title"><span>02</span><div><b>Your timeline</b><small>Semester rows are created for your personal roadmap.</small></div></div>
+  <div class="form-grid">
+    <label>Current semester<input name="current_semester" type="number" min="1" max="16" value="{{ current_user.current_semester or 1 }}" required></label>
+    <label>Total semesters<input name="total_semesters" type="number" min="1" max="16" value="{{ current_user.total_semesters or 8 }}" required></label>
+    <label>Current semester start<input type="date" name="semester_start" value="{{ current_row.start_date.isoformat() if current_row and current_row.start_date else '' }}"></label>
+    <label>Current semester end<input type="date" name="semester_end" value="{{ current_row.end_date.isoformat() if current_row and current_row.end_date else '' }}"></label>
+  </div>
+  <div class="form-section-title"><span>03</span><div><b>Your direction</b><small>Goals are for your own planning.</small></div></div>
+  <div class="form-grid">
+    <label class="span-two">Academic goals<textarea name="academic_goals" rows="3" maxlength="3000" placeholder="What would you like to focus on this year?">{{ current_user.academic_goals or '' }}</textarea></label>
+    <label>Target career role<select name="target_role"><option value="">Choose later</option>{% for role in ['Python Developer','Web Developer','Data Analyst','Software Engineer','AI/ML Engineer'] %}<option {{ 'selected' if current_user.target_role == role }}>{{ role }}</option>{% endfor %}</select></label>
+    <label>Preferred study hours per day<input name="preferred_study_hours" type="number" min="1" max="16" value="{{ current_user.preferred_study_hours or 2 }}"></label>
+  </div>
+  <div class="form-actions"><span>Planning estimates are not official graduation requirements.</span><button class="button button-primary" type="submit">Save degree setup <span>→</span></button></div>
+</form>
+{% endblock %}

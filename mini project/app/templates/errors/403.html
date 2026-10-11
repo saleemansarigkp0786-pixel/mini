@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% block title %}Access restricted{% endblock %}{% block content %}<section class="empty-state"><span class="empty-icon">403</span><h1>This area is restricted.</h1><p>Your account does not have permission to view this page.</p><a class="button button-primary" href="{{ url_for('student.dashboard') }}">Back to overview</a></section>{% endblock %}

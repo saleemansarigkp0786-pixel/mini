@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block title %}Sign in{% endblock %}
+{% block public_content %}
+<main class="auth-layout"><div class="auth-aside"><div class="auth-aside-mark">D<span>.</span></div><p>Make room for<br>the work that matters.</p><span>DEGREEPATH · YOUR ACADEMIC WORKSPACE</span></div><section class="auth-panel"><div class="auth-heading"><div class="eyebrow">WELCOME BACK</div><h1>Pick up where<br>you left off.</h1><p>Sign in to return to your degree plan.</p></div><form method="post" class="form-stack"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><label>Email address<input name="email" type="email" autocomplete="email" required maxlength="180" placeholder="you@college.edu"></label><label>Password<input name="password" type="password" autocomplete="current-password" required></label><label class="check-row"><input name="remember" type="checkbox"> Keep me signed in</label><button class="button button-primary button-wide" type="submit">Sign in <span>→</span></button></form><p class="auth-footer">New to DegreePath? <a href="{{ url_for('auth.register') }}">Create an account</a></p></section></main>
+{% endblock %}

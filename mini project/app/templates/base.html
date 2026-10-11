@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10233f">
+  <title>{% block title %}DegreePath{% endblock %} | DegreePath</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+{% if current_user.is_authenticated %}
+  <div class="workspace">
+    <aside class="sidebar" aria-label="Main navigation">
+      <a class="brand" href="{{ url_for('student.dashboard') }}"><span class="brand-mark">D</span><span>degree<span class="brand-light">path</span></span></a>
+      <div class="nav-label">Workspace</div>
+      <nav class="main-nav">
+        <a href="{{ url_for('student.dashboard') }}" class="{{ 'active' if request.endpoint == 'student.dashboard' else '' }}"><span class="nav-icon">◧</span>Overview</a>
+        <a href="{{ url_for('academics.roadmap') }}" class="{{ 'active' if request.endpoint == 'academics.roadmap' else '' }}"><span class="nav-icon">⌁</span>Degree roadmap</a>
+        <a href="{{ url_for('academics.progress') }}" class="{{ 'active' if request.endpoint == 'academics.progress' else '' }}"><span class="nav-icon">◔</span>Progress</a>
+        <a href="{{ url_for('planner.tasks') }}" class="{{ 'active' if request.endpoint == 'planner.tasks' else '' }}"><span class="nav-icon">▤</span>Study planner</a>
+        <a href="{{ url_for('planner.what_if') }}" class="{{ 'active' if request.endpoint == 'planner.what_if' else '' }}"><span class="nav-icon">↗</span>What-if planner</a>
+        <a href="{{ url_for('career.roadmap') }}" class="{{ 'active' if request.endpoint == 'career.roadmap' else '' }}"><span class="nav-icon">◎</span>Career path</a>
+      </nav>
+      {% if current_user.is_admin %}
+      <div class="nav-label nav-gap">Administration</div>
+      <nav class="main-nav"><a href="{{ url_for('admin.dashboard') }}"><span class="nav-icon">⌘</span>Admin console</a></nav>
+      {% endif %}
+      <div class="sidebar-bottom">
+        <a href="{{ url_for('student.profile') }}" class="profile-link"><span class="avatar">{{ current_user.name[:1]|upper }}</span><span><b>{{ current_user.name }}</b><small>{{ current_user.role|title }} account</small></span><span class="profile-more">···</span></a>
+        <form action="{{ url_for('auth.logout') }}" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="logout-link" type="submit">↪ &nbsp; Sign out</button></form>
+      </div>
+    </aside>
+    <main class="main-area">
+      <header class="topbar"><div class="mobile-brand"><span class="brand-mark">D</span> DegreePath</div><div class="topbar-meta">{{ current_user.branch or 'Your academic workspace' }} <span class="topbar-dot"></span> {{ current_user.scheme or 'Personal plan' }}</div><a class="top-avatar" href="{{ url_for('student.profile') }}" aria-label="Profile">{{ current_user.name[:1]|upper }}</a></header>
+      <div class="page-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack" role="status">{% for category, message in messages %}<div class="flash flash-{{ category }}">{{ message }}<button type="button" class="flash-close" aria-label="Dismiss">×</button></div>{% endfor %}</div>{% endif %}{% endwith %}
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+  </div>
+{% else %}
+  <div class="public-shell">
+    <header class="public-header"><a class="brand brand-dark" href="{{ url_for('landing') }}"><span class="brand-mark">D</span><span>degree<span class="brand-light">path</span></span></a><nav><a href="{{ url_for('auth.login') }}">Sign in</a><a class="button button-small" href="{{ url_for('auth.register') }}">Create account <span>↗</span></a></nav></header>
+    {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="public-flashes">{% for category, message in messages %}<div class="flash flash-{{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+    {% block public_content %}{% endblock %}
+  </div>
+{% endif %}
+<script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>
